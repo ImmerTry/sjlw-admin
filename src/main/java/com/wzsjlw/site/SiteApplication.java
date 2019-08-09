@@ -4,7 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@MapperScan("com.wzsjlw.site.dao")
+@MapperScan(basePackages = {"com.wzsjlw.site.dao"})
 @SpringBootApplication
 public class SiteApplication {
 

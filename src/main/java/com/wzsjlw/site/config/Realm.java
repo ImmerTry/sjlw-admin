@@ -37,7 +37,7 @@ public class Realm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        System.out.println("执行授权逻辑");
+        System.out.println("执行认证逻辑");
         return null;
     }
 }

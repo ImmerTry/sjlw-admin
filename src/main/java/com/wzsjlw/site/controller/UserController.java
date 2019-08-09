@@ -4,6 +4,7 @@ import com.wzsjlw.site.entity.User;
 import com.wzsjlw.site.service.UserService;
 import com.wzsjlw.site.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
