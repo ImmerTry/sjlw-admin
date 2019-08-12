@@ -1,11 +1,18 @@
 package com.wzsjlw.site.config;
 
+import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
+import org.apache.shiro.mgt.DefaultSubjectDAO;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -20,6 +27,25 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
+        advisor.setSecurityManager(securityManager);
+        return advisor;
+    }
+
+    @Bean
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
+    }
+
+    @Bean
+    @DependsOn("lifecycleBeanPostProcessor")
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+        defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);
+        return defaultAdvisorAutoProxyCreator;
+    }
 
     /**
      * 创建ShiroFilterFactoryBean
@@ -28,8 +54,14 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(@Qualifier("securityManager") DefaultWebSecurityManager manager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 
+        //添加自己的过滤器
+        Map<String, Filter> filterMap = new HashMap<>();
+        filterMap.put("jwt",new JwtFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
+
         //设置安全管理器
         shiroFilterFactoryBean.setSecurityManager(manager);
+        shiroFilterFactoryBean.setUnauthorizedUrl("/401");
 
         //添加 Shiro 内置过滤器
         /**
@@ -39,13 +71,12 @@ public class ShiroConfig {
          *  perms: 该资源必须得到资源权限才可以访问
          *  role: 该资源必须得到角色权限才可以访问
          */
-        Map<String, String> filterMap = new LinkedHashMap<>();
+        Map<String, String> filterRuleMap = new HashMap<>();
 
-        filterMap.put("/login", "authc");
+        filterRuleMap.put("/**", "jwt");
+        filterRuleMap.put("401", "anon");
 
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
-
-
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return shiroFilterFactoryBean;
     }
 
@@ -57,6 +88,12 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //关联 Realm
         securityManager.setRealm(realm);
+
+        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+        subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
+        // 关联 session
+        securityManager.setSubjectDAO(subjectDAO);
         return securityManager;
     }
 

@@ -16,4 +16,12 @@
         FROM
             user
     </select>
+    <select id="getUserByName" resultType="com.wzsjlw.site.entity.User">
+        SELECT
+            user_name,password,nick_name,access,avatar
+        FROM
+            user
+        WHERE
+            user_name = #{userName}
+    </select>
 </mapper>

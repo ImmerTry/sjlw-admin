@@ -1,5 +1,7 @@
 package com.wzsjlw.site.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -10,7 +12,7 @@ import java.io.Serializable;
  * @see:
  * @since:
  */
-public class User implements Serializable {
+public  @Data class  User implements Serializable {
 
     private static final long serialVersionUID = -5426787845352548307L;
     /**
@@ -36,8 +38,8 @@ public class User implements Serializable {
 
     /**
      * 用户权限
-     * 0、超级管理员
-     * 1、普通管理员
+     * 0、超级管理员 admin
+     * 1、普通管理员 user
      * 2、其它
      */
     private Integer access;
@@ -54,92 +56,4 @@ public class User implements Serializable {
      * 备注/说明
      */
     private String remark;
-
-
-    public Integer getPkId() {
-        return pkId;
-    }
-
-    public void setPkId(Integer pkId) {
-        this.pkId = pkId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getAccess() {
-        return access;
-    }
-
-    public void setAccess(Integer access) {
-        this.access = access;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "pkId=" + pkId +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", createTime='" + createTime + '\'' +
-                ", access=" + access +
-                ", avatar='" + avatar + '\'' +
-                ", updateTime='" + updateTime + '\'' +
-                ", remark='" + remark + '\'' +
-                '}';
-    }
 }

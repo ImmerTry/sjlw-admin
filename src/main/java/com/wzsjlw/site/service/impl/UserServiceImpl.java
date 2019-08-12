@@ -22,4 +22,10 @@ public class UserServiceImpl implements UserService {
     public User login(User user) {
         return userDAO.login(user);
     }
+
+    @Override
+    public User getUserByName(String userName) {
+        return userDAO.getUserByName(userName);
+    }
+
 }

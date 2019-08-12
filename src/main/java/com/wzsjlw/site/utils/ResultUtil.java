@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @see:
  * @since:
  */
-public class Result<T> implements Serializable {
+public class ResultUtil<T> implements Serializable {
 
     private static final long serialVersionUID = 9104048092175632249L;
     /**
@@ -40,37 +40,37 @@ public class Result<T> implements Serializable {
      */
     private T data;
 
-    public Result() {
+    public ResultUtil() {
     }
 
-    public static <T> Result<T> success() {
-        return new Result<T>()
+    public static <T> ResultUtil<T> success() {
+        return new ResultUtil<T>()
                 .setCode(SUCCESS)
                 .setMsg("成功");
     }
 
-    public static <T> Result<T> success(String msg, T data) {
-        return new Result<T>()
+    public static <T> ResultUtil<T> success(String msg, T data) {
+        return new ResultUtil<T>()
                 .setCode(SUCCESS)
                 .setMsg(msg)
                 .setData(data);
     }
 
-    public static <T> Result<T> success(T data) {
-        return new Result<T>()
+    public static <T> ResultUtil<T> success(T data) {
+        return new ResultUtil<T>()
                 .setCode(SUCCESS)
                 .setMsg("成功")
                 .setData(data);
     }
 
-    public static <T> Result<T> fail() {
-        return new Result<T>()
+    public static <T> ResultUtil<T> fail() {
+        return new ResultUtil<T>()
                 .setCode(FAIL)
                 .setMsg("失败");
     }
 
-    public static <T> Result<T> fail(String msg) {
-        return new Result<T>()
+    public static <T> ResultUtil<T> fail(String msg) {
+        return new ResultUtil<T>()
                 .setCode(FAIL)
                 .setMsg(msg);
     }
@@ -79,7 +79,7 @@ public class Result<T> implements Serializable {
         return code;
     }
 
-    public Result<T> setCode(Integer code) {
+    public ResultUtil<T> setCode(Integer code) {
         this.code = code;
         return this;
     }
@@ -88,7 +88,7 @@ public class Result<T> implements Serializable {
         return msg;
     }
 
-    public Result<T> setMsg(String msg) {
+    public ResultUtil<T> setMsg(String msg) {
         this.msg = msg;
         return this;
     }
@@ -97,7 +97,7 @@ public class Result<T> implements Serializable {
         return data;
     }
 
-    public Result<T> setData(T data) {
+    public ResultUtil<T> setData(T data) {
         this.data = data;
         return this;
     }

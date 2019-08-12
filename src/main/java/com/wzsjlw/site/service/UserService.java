@@ -16,4 +16,12 @@ public interface UserService {
      * @return
      */
     User login(User user);
+
+    /**
+     * 根据用户名获取用户信息
+     *
+     * @param userName 用户名
+     * @return 用户信息
+     */
+    User getUserByName(String userName);
 }
