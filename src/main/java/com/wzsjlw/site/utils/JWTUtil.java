@@ -21,7 +21,7 @@ public class JWTUtil {
     /**
      * 过期时间 5 分钟
      */
-    private static final long EXPIRESS_TIME = 5 * 60 * 1000;
+    private static final long EXPIRE_TIME = 5 * 60 * 1000;
 
     /**
      * 校验 token 是否正确
@@ -31,8 +31,7 @@ public class JWTUtil {
      * @param secret   用户的密码
      * @return 是否正确
      */
-    public static boolean verfiy(String token, String userName, String secret) {
-
+    public static boolean verify(String token, String userName, String secret) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             JWTVerifier verifier = JWT.require(algorithm)
@@ -69,7 +68,7 @@ public class JWTUtil {
      */
     public static String sign(String userName, String secret) {
         try {
-            Date date = new Date(System.currentTimeMillis() + EXPIRESS_TIME);
+            Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withClaim("username", userName)
@@ -78,6 +77,5 @@ public class JWTUtil {
         } catch (JWTCreationException e) {
             return null;
         }
-
     }
 }

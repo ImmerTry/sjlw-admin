@@ -1,5 +1,6 @@
 package com.wzsjlw.site.config;
 
+import com.fasterxml.jackson.core.sym.NameN;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -12,8 +13,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+import javax.servlet.Filter;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -27,6 +29,12 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
+    /**
+     * 开启 shiro AOP 注解支持
+     *
+     * @param securityManager
+     * @return
+     */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
@@ -50,19 +58,17 @@ public class ShiroConfig {
     /**
      * 创建ShiroFilterFactoryBean
      */
-    @Bean
+    @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(@Qualifier("securityManager") DefaultWebSecurityManager manager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 
         //添加自己的过滤器
         Map<String, Filter> filterMap = new HashMap<>();
-        filterMap.put("jwt",new JwtFilter());
+        filterMap.put("jwt", new JwtFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
-
         //设置安全管理器
         shiroFilterFactoryBean.setSecurityManager(manager);
         shiroFilterFactoryBean.setUnauthorizedUrl("/401");
-
         //添加 Shiro 内置过滤器
         /**
          *  anon: 无需认证（登录）可以访问
@@ -74,7 +80,7 @@ public class ShiroConfig {
         Map<String, String> filterRuleMap = new HashMap<>();
 
         filterRuleMap.put("/**", "jwt");
-        filterRuleMap.put("401", "anon");
+        filterRuleMap.put("/401", "anon");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return shiroFilterFactoryBean;
@@ -85,13 +91,16 @@ public class ShiroConfig {
      */
     @Bean(name = "securityManager")
     public DefaultWebSecurityManager getDefaultWebSecurityManager(@Qualifier("userRealm") Realm realm) {
+        // 关联 Realm
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        //关联 Realm
         securityManager.setRealm(realm);
 
+        // 关闭自带的 session
+        DefaultSessionStorageEvaluator evaluator = new DefaultSessionStorageEvaluator();
+        evaluator.setSessionStorageEnabled(false);
+
         DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
-        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
-        subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
+        subjectDAO.setSessionStorageEvaluator(evaluator);
         // 关联 session
         securityManager.setSubjectDAO(subjectDAO);
         return securityManager;

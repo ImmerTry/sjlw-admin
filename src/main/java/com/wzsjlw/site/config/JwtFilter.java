@@ -13,14 +13,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 处理前端请求统一拦截
  * @author: ll
  * @version: 1.0 2019-08-12
  * @see:
  * @since:
  */
 public class JwtFilter extends BasicHttpAuthenticationFilter {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtFilter.class);
 
+    /**
+     * 登录标识
+     */
+    private static String LOGIN_SIGN = "Authorization";
     /**
      * 判断用户是否想要登入
      *
@@ -31,14 +37,14 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
         HttpServletRequest servletRequest = (HttpServletRequest) request;
-        String authorization = servletRequest.getHeader("Authorization");
+        String authorization = servletRequest.getHeader(LOGIN_SIGN);
         return authorization != null;
     }
 
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest servletRequest = (HttpServletRequest) request;
-        String authorization = servletRequest.getHeader("Authorization");
+        String authorization = servletRequest.getHeader(LOGIN_SIGN);
 
         JwtToken token = new JwtToken(authorization);
         // 提交给 Realm 进行登入，如果错误抛出异常

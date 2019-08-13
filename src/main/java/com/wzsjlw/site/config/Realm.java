@@ -9,16 +9,11 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.crypto.hash.Hash;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.realm.SimpleAccountRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * 自定义 Realm
@@ -35,6 +30,11 @@ public class Realm extends AuthorizingRealm {
     @Autowired
     UserService userService;
 
+    /**
+     * 使用 JWT 替代原生 Token
+     * @param token
+     * @return
+     */
     @Override
     public boolean supports(AuthenticationToken token) {
         return token instanceof JwtToken;
@@ -48,8 +48,11 @@ public class Realm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+        LOGGER.info("doGetAuthorizationInfo: " + principals.toString());
+
         String username = JWTUtil.getUsername(principals.toString());
         User user = userService.getUserByName(username);
+
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.addRole(user.getAccess().toString());
 //        Set<String> permisson = new HashSet<>()
@@ -75,7 +78,7 @@ public class Realm extends AuthorizingRealm {
         if (user == null) {
             throw new AuthenticationException("用户不存在");
         }
-        if (!JWTUtil.verfiy(credentials,username,user.getPassword())) {
+        if (!JWTUtil.verify(credentials,username,user.getPassword())) {
             throw new AuthenticationException("用户名或密码不正确");
         }
         return new SimpleAuthenticationInfo(credentials,credentials,"Realm");
