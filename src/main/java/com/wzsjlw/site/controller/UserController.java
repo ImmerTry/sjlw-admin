@@ -12,10 +12,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -36,10 +33,9 @@ public class UserController {
 
     @PostMapping("/user/login")
     @ApiOperation("登录")
-    public ResultUtil login(@RequestBody Map userMap) {
-        LOGGER.info("用户名：" + userMap.get("userName") + " 密码：" + userMap.get("password"));
-        String userName = userMap.get("userName").toString();
-        String password = userMap.get("password").toString();
+    public ResultUtil login(@RequestParam("userName") String userName,
+                            @RequestParam("password") String password) {
+        LOGGER.info("用户名：" + userName + " 密码：" + password);
         try {
             User user = userService.getUserByName(userName);
             if (user.getPassword().equals(password)) {
