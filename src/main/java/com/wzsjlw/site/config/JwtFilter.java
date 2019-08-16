@@ -1,5 +1,6 @@
 package com.wzsjlw.site.config;
 
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,11 +47,15 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         HttpServletRequest servletRequest = (HttpServletRequest) request;
         String authorization = servletRequest.getHeader(LOGIN_SIGN);
 
-        JwtToken token = new JwtToken(authorization);
-        // 提交给 Realm 进行登入，如果错误抛出异常
-        getSubject(request, response).login(token);
-        // 如果没有抛出异常则代表成功，返回 true
-        return true;
+        try {
+            JwtToken token = new JwtToken(authorization);
+            // 提交给 Realm 进行登入，认证失败 抛出异常
+            getSubject(request, response).login(token);
+            // 如果没有抛出异常则代表成功，返回 true
+            return true;
+        } catch (AuthenticationException e) {
+            return false;
+        }
     }
 
     @Override
@@ -59,6 +64,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
             try {
                 executeLogin(request, response);
             } catch (Exception e) {
+                LOGGER.error(e.getMessage());
                 response401(request, response);
             }
         }

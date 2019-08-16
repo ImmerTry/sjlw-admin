@@ -12,7 +12,8 @@ import java.io.Serializable;
  * @see:
  * @since:
  */
-public  @Data class  User implements Serializable {
+@Data
+public class User implements Serializable {
 
     private static final long serialVersionUID = -5426787845352548307L;
     /**

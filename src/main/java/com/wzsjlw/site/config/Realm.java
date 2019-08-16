@@ -41,7 +41,7 @@ public class Realm extends AuthorizingRealm {
     }
 
     /**
-     * 执行授权逻辑
+     * 只有当需要检测用户权限的时候才会调用此方法
      *
      * @param principals
      * @return
@@ -79,7 +79,7 @@ public class Realm extends AuthorizingRealm {
             throw new AuthenticationException("用户不存在");
         }
         if (!JWTUtil.verify(credentials,username,user.getPassword())) {
-            throw new AuthenticationException("用户名或密码不正确");
+            throw new AuthenticationException("token 过时");
         }
         return new SimpleAuthenticationInfo(credentials,credentials,"Realm");
     }

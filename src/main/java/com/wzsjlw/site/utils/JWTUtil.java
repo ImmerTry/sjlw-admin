@@ -5,7 +5,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
@@ -18,6 +21,8 @@ import java.util.Date;
  * @since:
  */
 public class JWTUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JWTUtil.class);
     /**
      * 过期时间 5 分钟
      */
@@ -39,7 +44,8 @@ public class JWTUtil {
                     .build();
             DecodedJWT jwt = verifier.verify(token);
             return true;
-        } catch (IllegalArgumentException e) {
+        } catch (JWTVerificationException e) {
+            LOGGER.error("verify()：" + e.getMessage());
             return false;
         }
     }
@@ -55,6 +61,7 @@ public class JWTUtil {
             DecodedJWT jwt = JWT.decode(token);
             return jwt.getClaim("username").asString();
         } catch (JWTDecodeException e) {
+            LOGGER.error("getUsername()：" + e.getMessage());
             return null;
         }
     }

@@ -34,6 +34,6 @@ mybatis:
   # 配置 JAVA 类型包
   type-aliases-package: com.wzsjlw.site.entity
   # 注册 XML 映射器
-  mapper-locations: mybatis/*Mapper.xml
+  mapper-locations: classpath:mybatis/*Mapper.xml
   configuration:
     map-underscore-to-camel-case: true

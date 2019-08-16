@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author ll
  */
-@MapperScan(basePackages = {"com.wzsjlw.site.dao"})
+@MapperScan(basePackages = "com.wzsjlw.site.dao")
 @SpringBootApplication
 public class SiteApplication {
 

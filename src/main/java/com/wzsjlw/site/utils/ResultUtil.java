@@ -1,5 +1,8 @@
 package com.wzsjlw.site.utils;
 
+import lombok.Data;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
@@ -19,6 +22,10 @@ public class ResultUtil<T> implements Serializable {
      * 失败 400
      */
     private static final Integer FAIL = 400;
+    /**
+     * 未授权 401
+     */
+    private static final Integer UNAUTHORIZED = 401;
     /**
      * 路径/接口不存在 404
      */
@@ -43,8 +50,8 @@ public class ResultUtil<T> implements Serializable {
     public ResultUtil() {
     }
 
-    public static <T> ResultUtil<T> success() {
-        return new ResultUtil<T>()
+    public static ResultUtil success() {
+        return new ResultUtil()
                 .setCode(SUCCESS)
                 .setMsg("成功");
     }
@@ -63,20 +70,35 @@ public class ResultUtil<T> implements Serializable {
                 .setData(data);
     }
 
-    public static <T> ResultUtil<T> fail() {
-        return new ResultUtil<T>()
+    public static ResultUtil fail() {
+        return new ResultUtil()
                 .setCode(FAIL)
                 .setMsg("失败");
     }
 
-    public static <T> ResultUtil<T> fail(String msg) {
-        return new ResultUtil<T>()
+    public static ResultUtil fail(String msg) {
+        return new ResultUtil()
                 .setCode(FAIL)
                 .setMsg(msg);
     }
 
-    public Integer getCode() {
-        return code;
+    public static <T> ResultUtil<T> error(String msg, T data) {
+        return new ResultUtil<T>()
+                .setCode(UNAUTHORIZED)
+                .setMsg(msg)
+                .setData(data);
+    }
+
+    public static ResultUtil error(String msg) {
+        return new ResultUtil()
+                .setCode(UNAUTHORIZED)
+                .setMsg(msg);
+    }
+
+    public static ResultUtil error(Integer code, String msg) {
+        return new ResultUtil()
+                .setCode(code)
+                .setMsg(msg);
     }
 
     public ResultUtil<T> setCode(Integer code) {
@@ -84,21 +106,25 @@ public class ResultUtil<T> implements Serializable {
         return this;
     }
 
-    public String getMsg() {
-        return msg;
-    }
-
     public ResultUtil<T> setMsg(String msg) {
         this.msg = msg;
         return this;
     }
 
-    public T getData() {
-        return data;
-    }
-
     public ResultUtil<T> setData(T data) {
         this.data = data;
         return this;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public T getData() {
+        return data;
     }
 }

@@ -12,9 +12,8 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 /**
  * @author: ll
@@ -54,12 +53,18 @@ public class UserController {
         if (subject.isAuthenticated()) {
             return ResultUtil.success("通过过认证");
         } else {
-            return ResultUtil.success("普通用户");
+            return ResultUtil.success("未通过验证");
         }
     }
     @GetMapping("/require_path")
     @RequiresAuthentication
     public ResultUtil requirePath() {
         return ResultUtil.success("获得认证资格");
+    }
+
+    @RequestMapping(path = "/401")
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResultUtil unauthorized() {
+        return ResultUtil.error("未授权");
     }
 }

@@ -1,6 +1,5 @@
 package com.wzsjlw.site.config;
 
-import com.fasterxml.jackson.core.sym.NameN;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
 import javax.servlet.Filter;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
