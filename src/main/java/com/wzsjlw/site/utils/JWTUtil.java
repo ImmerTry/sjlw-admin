@@ -17,8 +17,8 @@ import java.util.Date;
  *
  * @author: ll
  * @version: 1.0 2019-08-12
- * @see: https://github.com/auth0/java-jwt
- * @since:
+ * @see:
+ * @since: https://github.com/auth0/java-jwt
  */
 public class JWTUtil {
 

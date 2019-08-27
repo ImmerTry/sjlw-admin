@@ -37,3 +37,9 @@ mybatis:
   mapper-locations: classpath:mybatis/*Mapper.xml
   configuration:
     map-underscore-to-camel-case: true
+# PageHelper 分页插件配置
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

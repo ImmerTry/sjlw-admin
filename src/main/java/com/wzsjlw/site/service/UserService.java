@@ -1,6 +1,7 @@
 package com.wzsjlw.site.service;
 
 import com.wzsjlw.site.entity.User;
+import com.wzsjlw.site.utils.ResultUtil;
 
 /**
  * @author: ll
@@ -24,4 +25,22 @@ public interface UserService {
      * @return 用户信息
      */
     User getUserByName(String userName);
+
+    /**
+     * 添加用户
+     *
+     * @param userName 用户名
+     * @param nickName 昵称
+     * @param password 密码
+     * @return 结果集
+     */
+    ResultUtil save(String userName, String nickName, String password);
+
+    /**
+     * 更新密码
+     * @param userName 用户名
+     * @param password 密码
+     * @return 结果集
+     */
+    ResultUtil updatePassword(String userName, String password);
 }

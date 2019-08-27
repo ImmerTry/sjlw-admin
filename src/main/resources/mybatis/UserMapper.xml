@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wzsjlw.site.dao.UserDAO">
+    <insert id="save">
+        INSERT INTO user(user_name,nick_name,password,create_time,remark)
+        VALUES (#{userName},#{nickName},#{password},NOW(),"新建用户")
+    </insert>
+    <update id="updatePassword">
+         UPDATE user
+         SET password = #{password}
+         WHERE user_name = #{userName}
+    </update>
     <select id="login" resultType="com.wzsjlw.site.entity.User">
         SELECT
             pk_id,user_name,password,nick_name,access,avatar
         FROM
             user
-        where 1=1
-        and user_name = #{userName}
-        and password = #{password}
+        WHERE 1=1
+        AND user_name = #{userName}
+        AND password = #{password}
     </select>
     <select id="getAllUser" resultType="com.wzsjlw.site.entity.User">
         SELECT
@@ -18,7 +27,7 @@
     </select>
     <select id="getUserByName" resultType="com.wzsjlw.site.entity.User">
         SELECT
-            user_name,password,nick_name,access,avatar
+            pk_id,user_name,password,nick_name,access,avatar
         FROM
             user
         WHERE

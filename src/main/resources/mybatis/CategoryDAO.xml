@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wzsjlw.site.dao.CategoryDAO">
+    <insert id="save">
+        INSERT INTO category(category_name,create_time)
+        VALUES (#{categoryName},NOW())
+    </insert>
+    <update id="update">
+        UPDATE category
+        SET category_name = #{category.categoryName},
+            update_time = NOW()
+        WHERE pk_id = #{category.pkId}
+    </update>
+    <delete id="delete">
+        DELETE FROM category
+        WHERE pk_id = #{categoryId}
+    </delete>
+    <select id="selectAll" resultType="com.wzsjlw.site.entity.Category">
+        SELECT pk_id,category_name
+        FROM category
+    </select>
+</mapper>

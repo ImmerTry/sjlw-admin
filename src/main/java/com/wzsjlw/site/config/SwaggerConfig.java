@@ -41,7 +41,7 @@ public class SwaggerConfig {
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("API")
+                .title("盛景劳务后台API接口")
                 .version("1.0")
                 .description("请求路径API")
                 .contact(new Contact("ImmerTry", "https://immertry.top", "immertry@gmail.com"))

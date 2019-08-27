@@ -50,8 +50,6 @@ public class SiteApplicationTests {
         realm.addAccount("ll", "123456");
     }
 
-
-
     @Test
     public void testShiro() {
         Realm realm = new Realm();
@@ -80,5 +78,10 @@ public class SiteApplicationTests {
         subject.logout();
 
         System.out.println("isAuthenticated: " + subject.isAuthenticated());
+    }
+
+    @Test
+    public void testUpload() {
+
     }
 }

@@ -56,6 +56,12 @@ public class ResultUtil<T> implements Serializable {
                 .setMsg("成功");
     }
 
+    public static ResultUtil success(String msg) {
+        return new ResultUtil()
+                .setCode(SUCCESS)
+                .setMsg(msg);
+    }
+
     public static <T> ResultUtil<T> success(String msg, T data) {
         return new ResultUtil<T>()
                 .setCode(SUCCESS)
@@ -77,7 +83,7 @@ public class ResultUtil<T> implements Serializable {
     }
 
     public static ResultUtil fail(String msg) {
-        return new ResultUtil()
+            return new ResultUtil()
                 .setCode(FAIL)
                 .setMsg(msg);
     }
